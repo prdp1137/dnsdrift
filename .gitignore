@@ -1,0 +1,7 @@
+/dnsdrift
+/dnsdrift-*
+dist/
+*.json
+*.log
+*.txt
+!resolvers.txt
