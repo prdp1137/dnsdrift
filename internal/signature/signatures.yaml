@@ -1,0 +1,652 @@
+# Go — Signature Database
+# Sources: can-i-take-over-xyz, can-i-take-over-dns, dnsReaper
+# Last updated: 2026-03-24
+#
+# Types:
+#   cname_string_in_body       — CNAME matches -> HTTP body contains fingerprint
+#   cname_or_ip_string_in_body — CNAME or A/AAAA matches -> HTTP body contains fingerprint
+#   ip_string_in_body          — A/AAAA matches -> HTTP body contains fingerprint
+#   cname_nxdomain             — CNAME matches -> CNAME target returns NXDOMAIN
+#   cname_status_code          — CNAME matches -> HTTP returns specific status code
+#   ns_no_soa                  — NS matches -> NS has no SOA for domain
+#   generic_cname_unregistered — any external 2-part CNAME -> WHOIS shows unregistered
+#   generic_cname_nxdomain     — any external CNAME (filtered) -> CNAME target NXDOMAIN
+#   generic_cname_404          — any external CNAME -> HTTP 404
+#   generic_ns_no_soa          — any external NS -> no SOA on that NS
+#
+# Adding a new signature: copy any block, change the values. No code needed.
+
+# ━━━ CNAME or IP + string in body ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: github_pages
+  type: cname_or_ip_string_in_body
+  confidence: potential
+  service: Github Pages
+  cnames: [".github.io"]
+  ips:
+    - "185.199.108.153"
+    - "185.199.109.153"
+    - "185.199.110.153"
+    - "185.199.111.153"
+    - "2606:50c0:8000::153"
+    - "2606:50c0:8001::153"
+    - "2606:50c0:8002::153"
+    - "2606:50c0:8003::153"
+  fingerprint: "There isn't a GitHub Pages site here."
+  https: true
+
+- name: shopify
+  type: cname_or_ip_string_in_body
+  confidence: potential
+  service: Shopify
+  cnames: ["shops.myshopify.com"]
+  ips: ["23.227.38.65"]
+  fingerprint: "Sorry, this shop is currently unavailable."
+
+- name: anima
+  type: cname_or_ip_string_in_body
+  confidence: confirmed
+  service: anima app
+  cnames: [".animaapp.io", "ns1.animaapp.com"]
+  ips: ["35.164.217.247"]
+  fingerprint: "The page you were looking for does not exist."
+
+# ━━━ CNAME + string in body ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: agilecrm
+  type: cname_string_in_body
+  confidence: confirmed
+  service: agilecrm.com
+  cnames: ["cname.agilecrm.com"]
+  fingerprint: "Sorry, this page is no longer available."
+
+- name: aha
+  type: cname_string_in_body
+  confidence: confirmed
+  service: aha.io
+  cnames: [".aha.io"]
+  fingerprint: "There is no portal here"
+
+- name: airee_ru
+  type: cname_string_in_body
+  confidence: confirmed
+  service: airee.ru
+  cnames: ["cdn.airee.ru"]
+  fingerprint: "Ошибка 402. Сервис Айри.рф не оплачен"
+
+- name: aws_s3
+  type: cname_string_in_body
+  confidence: confirmed
+  service: AWS S3
+  cnames:
+    - ".s3.amazonaws.com"
+    - ".s3-website-us-east-1.amazonaws.com"
+    - ".s3-website-us-west-2.amazonaws.com"
+    - ".s3-website-us-west-1.amazonaws.com"
+    - ".s3-website-eu-west-1.amazonaws.com"
+    - ".s3-website.us-east-2.amazonaws.com"
+    - ".s3-website.eu-central-1.amazonaws.com"
+    - ".s3-website.eu-west-2.amazonaws.com"
+    - ".s3-website.ap-south-1.amazonaws.com"
+    - ".s3-website.ap-northeast-2.amazonaws.com"
+    - ".s3-website.ap-southeast-1.amazonaws.com"
+    - ".s3-website.ap-southeast-2.amazonaws.com"
+    - ".s3-website.ap-northeast-1.amazonaws.com"
+    - ".s3-website.sa-east-1.amazonaws.com"
+    - ".s3-website.ca-central-1.amazonaws.com"
+  fingerprint: "NoSuchBucket"
+
+- name: bigcartel
+  type: cname_string_in_body
+  confidence: confirmed
+  service: bigcartel.com
+  cnames: [".bigcartel.com"]
+  fingerprint: "DNS resolution error"
+
+- name: bitbucket
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Bitbucket
+  cnames: [".bitbucket.io"]
+  fingerprint: "Repository not found"
+
+- name: brandpad
+  type: cname_string_in_body
+  confidence: confirmed
+  service: brandpad.io
+  cnames: ["brandpad.io"]
+  fingerprint: "is not registered as whitelabel or custom domain."
+
+- name: brightcove
+  type: cname_string_in_body
+  confidence: confirmed
+  service: BrightCove
+  cnames: [".bcvp0rtal.com", ".brightcovegallery.com", ".gallery.video"]
+  fingerprint: "Error Code: 404"
+
+- name: campaign_monitor
+  type: cname_string_in_body
+  confidence: confirmed
+  service: campaignmonitor.com
+  cnames: [".campaignmonitor.com"]
+  fingerprint: "Trying to access your account?"
+
+- name: canny
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Canny
+  cnames: ["cname.canny.io"]
+  fingerprint: "There is no such company"
+
+- name: cargo_collective
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Cargo Collective
+  cnames: [".cargo.site"]
+  fingerprint: "<div class=\"notfound\">\n\t\t\t404 Not Found<br>\n\t\t\t<a class=\"homepage_link"
+
+- name: frontify
+  type: cname_string_in_body
+  confidence: potential
+  service: frontify.com
+  cnames: ["cname.frontify.com"]
+  fingerprint: "Oops... looks like you got lost"
+
+- name: gemfury
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Gemfury
+  cnames: [".furyns.com"]
+  fingerprint: "404: This page could not be found."
+
+- name: getresponse
+  type: cname_string_in_body
+  confidence: confirmed
+  service: getresponse
+  cnames: [".gr8.com"]
+  fingerprint: "With GetResponse Landing Pages"
+
+- name: ghost
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Ghost
+  cnames: [".ghost.io"]
+  fingerprint: "Failed to resolve DNS path for this host"
+
+- name: hatenablog
+  type: cname_string_in_body
+  confidence: confirmed
+  service: hatenablog.com
+  cnames: [".hatenablog.com"]
+  fingerprint: "404 Blog is not found"
+
+- name: helpjuice
+  type: cname_string_in_body
+  confidence: confirmed
+  service: HelpJuice
+  cnames: [".helpjuice.com"]
+  fingerprint: "We could not find what you're looking for."
+
+- name: heroku
+  type: cname_string_in_body
+  confidence: potential
+  service: Heroku
+  cnames: [".herokudns.com", ".herokuapp.com", ".herokussl.com"]
+  fingerprint: "No such app"
+
+- name: intercom
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Intercom
+  cnames: ["custom.intercom.help"]
+  fingerprint: "This page is reserved for artistic dogs."
+
+- name: jetbrains
+  type: cname_string_in_body
+  confidence: confirmed
+  service: JetBrains YouTrack
+  cnames: ["youtrack.cloud", "cname.myjetbrains.com"]
+  fingerprint: "is not a registered InCloud YouTrack"
+
+- name: kinsta
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Kinsta
+  cnames: [".kinsta.cloud"]
+  fingerprint: "No Site For Domain"
+
+- name: landingi
+  type: cname_string_in_body
+  confidence: potential
+  service: Landingi
+  cnames: ["cname.landingi.com"]
+  fingerprint: "It looks like you're lost"
+
+- name: launchrock_cname
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Launchrock
+  cnames: ["host.launchrock.com"]
+  fingerprint: "It looks like you may have taken a wrong turn somewhere"
+  https: true
+
+- name: mashery
+  type: cname_string_in_body
+  confidence: potential
+  service: mashery.com
+  cnames: [".mashery.com"]
+  fingerprint: "Unrecognized domain"
+  https: true
+
+- name: mysmartjobboard
+  type: cname_string_in_body
+  confidence: confirmed
+  service: mysmartjobboard.com
+  cnames: ["cname.mysmartjobboard.com"]
+  fingerprint: "Job Board Is Unavailable"
+  https: true
+
+- name: netlify
+  type: cname_string_in_body
+  confidence: potential
+  service: Netlify
+  cnames: [".netlify.app"]
+  fingerprint: "Not Found - Request ID:"
+
+- name: ngrok
+  type: cname_string_in_body
+  confidence: confirmed
+  service: ngrok.io
+  cnames: ["cname.us.ngrok.io", "cname.eu.ngrok.io", "cname.uk.ngrok.io", "cname.ngrok.io"]
+  fingerprint: "ERR_NGROK_3200"
+
+- name: pantheon
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Pantheon
+  cnames: [".pantheonsite.io", ".pantheon.io"]
+  fingerprint: "404 error unknown site!"
+
+- name: pingdom
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Pingdom
+  cnames: ["stats.pingdom.com"]
+  fingerprint: "Public Report Not Activated"
+
+- name: readme
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Readme.io
+  cnames: [".readme.io"]
+  fingerprint: "The creators of this project are still working"
+
+- name: readthedocs
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Read the Docs
+  cnames: [".readthedocs.io", "readthedocs.org"]
+  fingerprint: "The link you have followed or the URL that you entered does not exist."
+
+- name: short
+  type: cname_string_in_body
+  confidence: confirmed
+  service: short
+  cnames: ["cname.short.io"]
+  fingerprint: "This domain is not configured on Short.io."
+  https: true
+
+- name: simplebooklet
+  type: cname_string_in_body
+  confidence: confirmed
+  service: simplebooklet.com
+  cnames: ["cname.simplebooklet.com"]
+  fingerprint: "The link to this Simplebooklet may have changed"
+  https: true
+
+- name: smugmug
+  type: cname_string_in_body
+  confidence: confirmed
+  service: SmugMug
+  cnames: ["domains.smugmug.com"]
+  fingerprint: "Page Not Found"
+
+- name: strikingly
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Strikingly
+  cnames: ["s.strikinglydns.com"]
+  fingerprint: "PAGE NOT FOUND."
+
+- name: surge
+  type: cname_string_in_body
+  confidence: potential
+  service: surge.sh
+  cnames: ["na-west1.surge.sh", "cname.surge.sh"]
+  fingerprint: "project not found"
+
+- name: surveysparrow
+  type: cname_string_in_body
+  confidence: confirmed
+  service: survey sparrow
+  cnames: [".surveysparrow.com"]
+  fingerprint: "Account not found."
+
+- name: teamwork
+  type: cname_string_in_body
+  confidence: confirmed
+  service: teamwork
+  cnames: [".teamwork.com"]
+  fingerprint: "Oops - We didn't find your site."
+  uri: "launchpad/v1/info.json"
+
+- name: thinkific
+  type: cname_string_in_body
+  confidence: confirmed
+  service: thinkific.com
+  cnames: [".thinkific.com"]
+  fingerprint: "Cloudflare is currently unable to resolve your requested domain"
+
+- name: tumblr
+  type: cname_string_in_body
+  confidence: potential
+  service: tumblr.com
+  cnames: [".tumblr.com"]
+  fingerprint: "Whatever you were looking for doesn't currently exist at this address"
+
+- name: uberflip
+  type: cname_string_in_body
+  confidence: confirmed
+  service: Uberflip
+  cnames: ["read.uberflip.com"]
+  fingerprint: "The URL you've accessed does not provide a hub."
+
+- name: uservoice
+  type: cname_string_in_body
+  confidence: confirmed
+  service: UserVoice
+  cnames: [".uservoice.com"]
+  fingerprint: "This UserVoice subdomain is currently available!"
+
+- name: vendhq
+  type: cname_string_in_body
+  confidence: confirmed
+  service: vendhq.com
+  cnames: ["cname.vendhq.com"]
+  fingerprint: "Looks like you've traveled too far into cyberspace."
+  https: true
+
+- name: vercel
+  type: cname_string_in_body
+  confidence: potential
+  service: Vercel
+  cnames: [".vercel.app", "cname.vercel-dns.com"]
+  fingerprint: "DEPLOYMENT_NOT_FOUND"
+
+- name: webflow
+  type: cname_string_in_body
+  confidence: potential
+  service: webflow.com
+  cnames: ["cname.proxy.webflow.com", "cname.proxy-ssl.webflow.com"]
+  fingerprint: "The page you are looking for doesn't exist or has been moved."
+
+- name: wishpond
+  type: cname_string_in_body
+  confidence: confirmed
+  service: wishpond.com
+  cnames: ["cname.wishpond.com"]
+  fingerprint: "https://www.wishpond.com/404?campaign=true"
+  https: true
+
+- name: wix
+  type: cname_string_in_body
+  confidence: potential
+  service: Wix
+  cnames: [".wixsite.com", ".wixdns.net"]
+  fingerprint: "Looks Like This Domain Isn't Connected To A Website Yet"
+
+- name: wordpress_com_cname
+  type: cname_string_in_body
+  confidence: confirmed
+  service: wordpress.com
+  cnames: [".wordpress.com"]
+  fingerprint: "Do you want to register"
+  https: true
+
+- name: worksites
+  type: cname_or_ip_string_in_body
+  confidence: confirmed
+  service: Worksites
+  cnames: ["worksites.net"]
+  ips: ["69.164.223.206"]
+  fingerprint: "Hello! Sorry, but the website you're looking for doesn't exist."
+
+# ━━━ IP + string in body ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: convertkit
+  type: ip_string_in_body
+  confidence: confirmed
+  service: Convert Pages
+  ips: ["3.13.222.255", "3.13.246.91", "3.130.60.26"]
+  fingerprint: "The page you were looking for doesn"
+
+- name: smartjobboard
+  type: ip_string_in_body
+  confidence: confirmed
+  service: smartjobboard.com
+  ips: ["52.16.160.97"]
+  fingerprint: "job board website is either expired or its domain name is invalid."
+  https: true
+
+# ━━━ CNAME + status code ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: announcekit
+  type: cname_status_code
+  confidence: confirmed
+  service: announcekit
+  cnames: ["cname.announcekit.app"]
+  status_code: 0
+
+- name: bettermode
+  type: cname_status_code
+  confidence: confirmed
+  service: bettermode.com
+  cnames: ["domains.bettermode.io"]
+  status_code: 409
+
+- name: helprace
+  type: cname_status_code
+  confidence: confirmed
+  service: Helprace
+  cnames: [".helprace.com"]
+  status_code: 301
+
+- name: helpscout
+  type: cname_string_in_body
+  confidence: confirmed
+  service: helpscoutdocs.com
+  cnames: ["cname.helpscoutdocs.com"]
+  fingerprint: "No settings were found for this company:"
+
+- name: zohoforms
+  type: cname_status_code
+  confidence: confirmed
+  service: zoho forms
+  cnames: ["forms.cs.zohohost.com", "forms.cs.zohohost.eu"]
+  status_code: 400
+
+- name: zohoforms_in
+  type: cname_status_code
+  confidence: confirmed
+  service: zoho forms india
+  cnames: ["forms.cs.zohohost.in"]
+  status_code: 403
+
+# ━━━ CNAME + NXDOMAIN ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: discourse
+  type: cname_nxdomain
+  confidence: confirmed
+  service: Discourse
+  cnames: [".trydiscourse.com"]
+
+- name: elastic_beanstalk
+  type: cname_nxdomain
+  confidence: confirmed
+  service: AWS Elastic Beanstalk
+  cnames:
+    - ".us-east-1.elasticbeanstalk.com"
+    - ".us-east-2.elasticbeanstalk.com"
+    - ".us-west-1.elasticbeanstalk.com"
+    - ".us-west-2.elasticbeanstalk.com"
+    - ".af-south-1.elasticbeanstalk.com"
+    - ".ap-east-1.elasticbeanstalk.com"
+    - ".ap-south-1.elasticbeanstalk.com"
+    - ".ap-south-2.elasticbeanstalk.com"
+    - ".ap-southeast-1.elasticbeanstalk.com"
+    - ".ap-southeast-2.elasticbeanstalk.com"
+    - ".ap-southeast-3.elasticbeanstalk.com"
+    - ".ap-southeast-4.elasticbeanstalk.com"
+    - ".ap-southeast-5.elasticbeanstalk.com"
+    - ".ap-northeast-1.elasticbeanstalk.com"
+    - ".ap-northeast-2.elasticbeanstalk.com"
+    - ".ap-northeast-3.elasticbeanstalk.com"
+    - ".ca-central-1.elasticbeanstalk.com"
+    - ".eu-central-1.elasticbeanstalk.com"
+    - ".eu-central-2.elasticbeanstalk.com"
+    - ".eu-west-1.elasticbeanstalk.com"
+    - ".eu-west-2.elasticbeanstalk.com"
+    - ".eu-west-3.elasticbeanstalk.com"
+    - ".eu-south-1.elasticbeanstalk.com"
+    - ".eu-south-2.elasticbeanstalk.com"
+    - ".eu-north-1.elasticbeanstalk.com"
+    - ".il-central-1.elasticbeanstalk.com"
+    - ".me-south-1.elasticbeanstalk.com"
+    - ".me-central-1.elasticbeanstalk.com"
+    - ".sa-east-1.elasticbeanstalk.com"
+
+- name: microsoft_azure
+  type: cname_nxdomain
+  confidence: confirmed
+  service: Microsoft Azure
+  cnames:
+    - ".cloudapp.azure.com"
+    - ".azurewebsites.net"
+    - ".blob.core.windows.net"
+    - ".azure-api.net"
+    - ".azurehdinsight.net"
+    - ".azureedge.net"
+    - ".azurefd.net"
+    - ".azurecontainer.io"
+    - ".azurecontainerapps.io"
+    - ".azurestaticapps.net"
+    - ".database.windows.net"
+    - ".azuredatalakestore.net"
+    - ".search.windows.net"
+    - ".azurecr.io"
+    - ".redis.cache.windows.net"
+    - ".servicebus.windows.net"
+    - ".trafficmanager.net"
+    - ".azure-mobile.net"
+
+# ━━━ NS + no SOA ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: digitalocean
+  type: ns_no_soa
+  confidence: confirmed
+  service: digitalocean.com
+  nameservers: ["ns1.digitalocean.com", "ns2.digitalocean.com", "ns3.digitalocean.com"]
+
+- name: dnsmadeeasy
+  type: ns_no_soa
+  confidence: confirmed
+  service: dnsmadeeasy.com
+  nameservers: ["dnsmadeeasy"]
+
+- name: dnssimple
+  type: ns_no_soa
+  confidence: confirmed
+  service: dnsimple.com
+  nameservers: ["ns1.dnsimple.com", "ns2.dnsimple.com", "ns3.dnsimple.com", "ns4.dnsimple.com"]
+
+- name: domain
+  type: ns_no_soa
+  confidence: confirmed
+  service: domain.com
+  nameservers: ["ns1.domain.com", "ns2.domain.com"]
+
+- name: googlecloud
+  type: ns_no_soa
+  confidence: potential
+  service: cloud.google.com
+  nameservers: ["googledomains"]
+
+- name: hurricane_electric
+  type: ns_no_soa
+  confidence: confirmed
+  service: he.net
+  nameservers: ["ns5.he.net", "ns4.he.net", "ns3.he.net", "ns2.he.net", "ns1.he.net"]
+
+- name: linode
+  type: ns_no_soa
+  confidence: confirmed
+  service: linode.com
+  nameservers: ["ns1.linode.com", "ns2.linode.com"]
+
+- name: name
+  type: ns_no_soa
+  confidence: confirmed
+  service: name.com
+  nameservers: [".name.com"]
+
+- name: reg
+  type: ns_no_soa
+  confidence: confirmed
+  service: reg.ru
+  nameservers: ["ns1.reg.ru", "ns2.reg.ru"]
+
+- name: tierranet
+  type: ns_no_soa
+  confidence: confirmed
+  service: tierra.net
+  nameservers: ["ns1.domaindiscover.com", "ns2.domaindiscover.com"]
+
+- name: wordpress_com_ns
+  type: ns_no_soa
+  confidence: confirmed
+  service: wordpress.com
+  nameservers: ["ns1.wordpress.com", "ns2.wordpress.com", "ns3.wordpress.com"]
+
+# ━━━ Generic signatures ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- name: generic_cname_unregistered
+  type: generic_cname_unregistered
+  confidence: confirmed
+  service: "(unregistered CNAME target)"
+  info: "The domain has a CNAME pointing to a domain that is not registered. You may be able to register it."
+
+- name: generic_cname_nxdomain
+  type: generic_cname_nxdomain
+  confidence: potential
+  service: "(dangling CNAME)"
+  info: "The domain has a CNAME that does not resolve. Investigate if you can register or takeover this target."
+
+- name: generic_cname_404_http
+  type: generic_cname_404
+  confidence: unlikely
+  service: "(HTTP 404 on external CNAME)"
+  https: false
+  info: "The domain has a CNAME to a different org but the website returns 404 over HTTP."
+
+- name: generic_cname_404_https
+  type: generic_cname_404
+  confidence: unlikely
+  service: "(HTTPS 404 on external CNAME)"
+  https: true
+  info: "The domain has a CNAME to a different org but the website returns 404 over HTTPS."
+
+- name: generic_zone_missing_on_ns
+  type: generic_ns_no_soa
+  confidence: potential
+  service: "(missing zone on NS)"
+  info: "The domain has NS records to a third-party but those nameservers do not host a zone for this domain."
