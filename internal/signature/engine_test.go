@@ -152,8 +152,8 @@ func TestLoadSignatures(t *testing.T) {
 			if s.Type != "cname_or_ip_string_in_body" {
 				t.Errorf("github_pages type = %q, want cname_or_ip_string_in_body", s.Type)
 			}
-			if s.Confidence != Confirmed {
-				t.Errorf("github_pages confidence = %q, want confirmed", s.Confidence)
+			if s.Confidence != Potential {
+				t.Errorf("github_pages confidence = %q, want potential", s.Confidence)
 			}
 			break
 		}
